@@ -22,7 +22,7 @@ public class App {
         usr.setUsuario(sc.nextLine());
         
         System.out.println("Ingrese la contraseña");
-        usr.setPassword(sc.nextLine());
+        usr.setPassword(modelo.Hash.getHash(sc.nextLine(), "SHA1"));
         
         if(cons.login(usr)){            //Prueba de sistema login antes de hacer la interfaz
             System.out.println("Bienvenido al sistema");
