@@ -18,7 +18,7 @@ public class App {
         modelo.Usuario usr = new modelo.Usuario();
         modelo.Consultas cons = new modelo.Consultas();
         
-        System.out.println("Ingrese el usuario");
+        System.out.println("Ingrese el usuario"); //hola
         usr.setUsuario(sc.nextLine());
         
         System.out.println("Ingrese la contraseña");
