@@ -4,7 +4,7 @@ package satafesc;
  *
  * @author aleja
  */
-public class App {
+public class App { //lo que quiera 
 
     /**
      * @param args the command line arguments
