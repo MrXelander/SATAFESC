@@ -5,7 +5,7 @@ package modelo;
  * @author aleja
  */
 public class Usuario {  //Objeto usuario para facilitar el login y tareas posteriores
-    private int id;
+    private int id;     //Prueba para commit
     private String usuario;
     private String password;
     private String tipo;
