@@ -4,17 +4,28 @@
  */
 package vista;
 
+import java.awt.CardLayout;
+import java.awt.Color;
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author aleja
  */
 public class VistaMenu extends javax.swing.JFrame {
 
+    //CardLayout para intercambiar paneles
+    panelVentas panelVentas = new panelVentas();
+    panelInventario panelInventario = new panelInventario();
+    CardLayout panelPrincipal;
+    
+    
     /**
      * Creates new form VistaMenu
      */
     public VistaMenu() {
         initComponents();
+        panelPrincipal = (CardLayout) panelWorkZone.getLayout();
     }
 
     /**
@@ -26,21 +37,146 @@ public class VistaMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        panelSideBar = new javax.swing.JPanel();
+        buttonVentas = new javax.swing.JButton();
+        buttonInventario = new javax.swing.JButton();
+        buttonFinanzas = new javax.swing.JButton();
+        buttonAyuda = new javax.swing.JButton();
+        buttonLogOut = new javax.swing.JButton();
+        labelLogo = new javax.swing.JLabel();
+        labelSATA = new javax.swing.JLabel();
+        panelMenuBar = new javax.swing.JPanel();
+        labelBienvenido = new javax.swing.JLabel();
+        labelUsuario = new javax.swing.JLabel();
+        panelWorkZone = new javax.swing.JPanel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setMinimumSize(new java.awt.Dimension(800, 600));
+        setSize(new java.awt.Dimension(1000, 700));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panelSideBar.setBackground(new java.awt.Color(255, 102, 102));
+        panelSideBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        buttonVentas.setBackground(new java.awt.Color(255, 102, 102));
+        buttonVentas.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        buttonVentas.setForeground(new java.awt.Color(255, 255, 255));
+        buttonVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/images/icons8_add_shopping_cart_24px.png"))); // NOI18N
+        buttonVentas.setText("Ventas");
+        buttonVentas.setBorderPainted(false);
+        buttonVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonVentasActionPerformed(evt);
+            }
+        });
+        panelSideBar.add(buttonVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 180, -1));
+
+        buttonInventario.setBackground(new java.awt.Color(255, 102, 102));
+        buttonInventario.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        buttonInventario.setForeground(new java.awt.Color(255, 255, 255));
+        buttonInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/images/icons8_package_24px.png"))); // NOI18N
+        buttonInventario.setText("Inventario");
+        buttonInventario.setBorderPainted(false);
+        buttonInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonInventarioActionPerformed(evt);
+            }
+        });
+        panelSideBar.add(buttonInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 180, -1));
+
+        buttonFinanzas.setBackground(new java.awt.Color(255, 102, 102));
+        buttonFinanzas.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        buttonFinanzas.setForeground(new java.awt.Color(255, 255, 255));
+        buttonFinanzas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/images/icons8_Us_Dollar_Circled_24px.png"))); // NOI18N
+        buttonFinanzas.setText("Finanzas");
+        buttonFinanzas.setBorderPainted(false);
+        panelSideBar.add(buttonFinanzas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 180, -1));
+
+        buttonAyuda.setBackground(new java.awt.Color(255, 102, 102));
+        buttonAyuda.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        buttonAyuda.setForeground(new java.awt.Color(255, 255, 255));
+        buttonAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/images/icons8_question_mark_24px.png"))); // NOI18N
+        buttonAyuda.setText("Ayuda");
+        buttonAyuda.setBorderPainted(false);
+        panelSideBar.add(buttonAyuda, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 580, 180, -1));
+
+        buttonLogOut.setBackground(new java.awt.Color(255, 102, 102));
+        buttonLogOut.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        buttonLogOut.setForeground(new java.awt.Color(255, 255, 255));
+        buttonLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/images/icons8_Logout_24px.png"))); // NOI18N
+        buttonLogOut.setText("Cerrar Sesión");
+        buttonLogOut.setBorderPainted(false);
+        panelSideBar.add(buttonLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 180, -1));
+
+        labelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/images/icons8_online_store_100px.png"))); // NOI18N
+        labelLogo.setToolTipText("");
+        labelLogo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        panelSideBar.add(labelLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 100, 100));
+
+        labelSATA.setFont(new java.awt.Font("Dubai Medium", 1, 24)); // NOI18N
+        labelSATA.setForeground(new java.awt.Color(255, 255, 255));
+        labelSATA.setText("SATA-FESC");
+        panelSideBar.add(labelSATA, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, -1));
+
+        getContentPane().add(panelSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 700));
+
+        panelMenuBar.setBackground(new java.awt.Color(102, 102, 102));
+
+        labelBienvenido.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        labelBienvenido.setForeground(new java.awt.Color(255, 255, 255));
+        labelBienvenido.setText("Bienvenido, ");
+
+        labelUsuario.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        labelUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        labelUsuario.setText("usuario");
+
+        javax.swing.GroupLayout panelMenuBarLayout = new javax.swing.GroupLayout(panelMenuBar);
+        panelMenuBar.setLayout(panelMenuBarLayout);
+        panelMenuBarLayout.setHorizontalGroup(
+            panelMenuBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMenuBarLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(labelBienvenido)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelUsuario)
+                .addContainerGap(547, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        panelMenuBarLayout.setVerticalGroup(
+            panelMenuBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMenuBarLayout.createSequentialGroup()
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addGroup(panelMenuBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelBienvenido)
+                    .addComponent(labelUsuario))
+                .addGap(24, 24, 24))
         );
+
+        getContentPane().add(panelMenuBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 820, 80));
+
+        panelWorkZone.setLayout(new java.awt.CardLayout());
+        getContentPane().add(panelWorkZone, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 820, 620));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVentasActionPerformed
+        //Actualiza el panel mostrado
+        panelWorkZone.add(panelVentas, "ventas");
+        panelPrincipal.show(panelWorkZone, "ventas");
+        SwingUtilities.updateComponentTreeUI(this);
+        this.repaint();   
+            
+    }//GEN-LAST:event_buttonVentasActionPerformed
+
+    private void buttonInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInventarioActionPerformed
+        // TODO add your handling code here:
+        panelWorkZone.add(panelInventario, "inventario");
+        panelPrincipal.show(panelWorkZone, "inventario");
+        SwingUtilities.updateComponentTreeUI(this);
+        this.repaint();
+    }//GEN-LAST:event_buttonInventarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +214,17 @@ public class VistaMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonAyuda;
+    private javax.swing.JButton buttonFinanzas;
+    private javax.swing.JButton buttonInventario;
+    private javax.swing.JButton buttonLogOut;
+    private javax.swing.JButton buttonVentas;
+    private javax.swing.JLabel labelBienvenido;
+    private javax.swing.JLabel labelLogo;
+    private javax.swing.JLabel labelSATA;
+    private javax.swing.JLabel labelUsuario;
+    private javax.swing.JPanel panelMenuBar;
+    private javax.swing.JPanel panelSideBar;
+    private javax.swing.JPanel panelWorkZone;
     // End of variables declaration//GEN-END:variables
 }
