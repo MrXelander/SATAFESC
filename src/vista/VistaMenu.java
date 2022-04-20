@@ -1,12 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package vista;
 
 import java.awt.CardLayout;
-import java.awt.Color;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -66,11 +60,6 @@ public class VistaMenu extends javax.swing.JFrame {
         buttonVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/images/icons8_add_shopping_cart_24px.png"))); // NOI18N
         buttonVentas.setText("Ventas");
         buttonVentas.setBorderPainted(false);
-        buttonVentas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonVentasActionPerformed(evt);
-            }
-        });
         panelSideBar.add(buttonVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 180, -1));
 
         buttonInventario.setBackground(new java.awt.Color(255, 102, 102));
@@ -79,11 +68,6 @@ public class VistaMenu extends javax.swing.JFrame {
         buttonInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/images/icons8_package_24px.png"))); // NOI18N
         buttonInventario.setText("Inventario");
         buttonInventario.setBorderPainted(false);
-        buttonInventario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonInventarioActionPerformed(evt);
-            }
-        });
         panelSideBar.add(buttonInventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 180, -1));
 
         buttonFinanzas.setBackground(new java.awt.Color(255, 102, 102));
@@ -160,58 +144,6 @@ public class VistaMenu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void buttonVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonVentasActionPerformed
-        //Actualiza el panel mostrado
-        panelWorkZone.add(panelVentas, "ventas");
-        panelPrincipal.show(panelWorkZone, "ventas");
-        SwingUtilities.updateComponentTreeUI(this);
-        this.repaint();   
-            
-    }//GEN-LAST:event_buttonVentasActionPerformed
-
-    private void buttonInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInventarioActionPerformed
-        // TODO add your handling code here:
-        panelWorkZone.add(panelInventario, "inventario");
-        panelPrincipal.show(panelWorkZone, "inventario");
-        SwingUtilities.updateComponentTreeUI(this);
-        this.repaint();
-    }//GEN-LAST:event_buttonInventarioActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VistaMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VistaMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VistaMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VistaMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VistaMenu().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAyuda;
