@@ -11,11 +11,11 @@ package modelo;
 public class Hash {
     
     /* Retorna un hash a partir de un tipo y un texto */
-    public static String getHash(String txt, String hashType) {
+    public String getHash(String txt, String hashType) { //los metodos no son estaticos, debido al uso de diferentes clases
         try {
             java.security.MessageDigest md = java.security.MessageDigest.getInstance(hashType);
             byte[] array = md.digest(txt.getBytes());
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder(); //se cambio el StringBuffer por StringBuilder (es más actual)
             for (int i = 0; i < array.length; ++i) {
                 sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
             }
@@ -27,12 +27,12 @@ public class Hash {
     }
  
     /* Retorna un hash MD5 a partir de un texto */
-    public static String md5(String txt) {
-        return Hash.getHash(txt, "MD5");
+    public String md5(String txt) {
+        return getHash(txt, "MD5");
     }
  
     /* Retorna un hash SHA1 a partir de un texto */
-    public static String sha1(String txt) {
-        return Hash.getHash(txt, "SHA1");
+    public String sha1(String txt) {
+        return getHash(txt, "SHA1");
     }
 }
