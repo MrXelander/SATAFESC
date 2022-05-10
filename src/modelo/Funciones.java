@@ -47,20 +47,26 @@ public class Funciones {
     }
     
     public static boolean caducidad(Producto pro){
-        String caducidad = pro.getCaducidad();
-        String fecha = obtenerFecha();
-        String cad[] = caducidad.split("-");
-        String hoy[] = fecha.split("-");
-        
-        int anio1 = Integer.parseInt(cad[0]);
-        int anio2 = Integer.parseInt(hoy[0]);
-        if(anio1<=anio2){
-            int mes1 = Integer.parseInt(cad[1]);
-            int mes2 = Integer.parseInt(hoy[1]);
-            if(mes1<=mes2 || anio2>anio1){
-                return true;
+        if(pro.getExistencias()>0){
+            String caducidad = pro.getCaducidad();
+            String fecha = obtenerFecha();
+            String cad[] = caducidad.split("-");
+            String hoy[] = fecha.split("-");
+
+            int anio1 = Integer.parseInt(cad[0]);
+            int anio2 = Integer.parseInt(hoy[0]);
+            if(anio1<=anio2){
+                int mes1 = Integer.parseInt(cad[1]);
+                int mes2 = Integer.parseInt(hoy[1]);
+                if(mes1<=mes2 || anio2>anio1){
+                    return true;
+                }
             }
         }
         return false;
+    }
+    
+    public static double ganancias(double caja, double bancos, double perdidas, double costov){
+        return (caja+bancos)-(perdidas+costov);
     }
 }

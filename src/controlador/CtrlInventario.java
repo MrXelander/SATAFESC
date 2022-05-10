@@ -3,6 +3,7 @@ package controlador;
 import vista.VistaInventario;
 import modelo.Consultas;
 import modelo.Producto;
+import modelo.Usuario;
 import java.awt.event.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -16,12 +17,14 @@ public class CtrlInventario implements ActionListener, KeyListener{
     private Consultas cons;
     private Producto pro;
     private DefaultTableModel tm;
+    private Usuario usr;
     
-    public CtrlInventario(VistaInventario view, Consultas cons, Producto pro, DefaultTableModel tm){
+    public CtrlInventario(VistaInventario view, Consultas cons, Producto pro, DefaultTableModel tm, Usuario usr){
         this.view = view;
         this.cons = cons;
         this.pro = pro;
         this.tm = tm;
+        this.usr = usr;
         this.view.btn_agregar.addActionListener(this);
         this.view.chb_caducidad.addActionListener(this);
         this.view.txt_nombre.addKeyListener(this);
@@ -37,6 +40,11 @@ public class CtrlInventario implements ActionListener, KeyListener{
     }
     
     public void init(){
+        if(!usr.getTipo().equals("Admin")){
+            view.btn_agregar.setEnabled(false);
+            view.btn_actualizar.setEnabled(false);
+            view.btn_borrar.setEnabled(false);
+        }
         ArrayList<String> lista =  cons.listaCategorias();
         for(int i = 0; i<lista.size(); i++){
             view.cb_categoria.addItem(lista.get(i));

@@ -29,10 +29,10 @@ public class CtrlMenu implements ActionListener{
     public void init(){
         view.setLocationRelativeTo(null);
         view.setResizable(false);
-        /*if(!usr.getTipo().equals("Admin")){
+        if(!usr.getTipo().equals("Admin")){
             view.btn_finanzas.setEnabled(false);
             view.btn_usuarios.setEnabled(false);
-        }*/
+        }
         java.util.ArrayList<modelo.Producto> listacad = new java.util.ArrayList();
         java.util.ArrayList<modelo.Producto> listastock = new java.util.ArrayList();
         java.util.ArrayList<String> listaProductos = cons.listaIdProductos();
@@ -90,7 +90,7 @@ public class CtrlMenu implements ActionListener{
             vista.VistaInventario vi = new vista.VistaInventario();
             modelo.Producto pro = new modelo.Producto();
             javax.swing.table.DefaultTableModel tm = (javax.swing.table.DefaultTableModel)vi.tabla_inventario.getModel();
-            CtrlInventario ctrl = new CtrlInventario(vi, cons, pro, tm);
+            CtrlInventario ctrl = new CtrlInventario(vi, cons, pro, tm, usr);
             view.escritorio.add(vi);
             ctrl.init();
             vi.setVisible(true);

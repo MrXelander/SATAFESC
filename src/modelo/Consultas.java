@@ -729,4 +729,27 @@ public class Consultas extends Conexion{
         
         }
     }*/
+    
+    public Object[] masVendido(String fecha){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT A.Id_Producto, A.Nom_Producto, MAX(B.suma) FROM (SELECT Id_Producto, Nom_Producto FROM producto) A INNER JOIN (SELECT Id_Producto, Id_Venta, SUM(Cantidad) AS suma FROM detalle_ventas GROUP BY Id_Producto) B ON A.Id_Producto = B.Id_Producto INNER JOIN (SELECT Id_Venta, Fecha FROM ventas) C ON C.Id_Venta = B.Id_Venta WHERE C.Fecha LIKE ?";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, fecha);
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return new Object[]{rs.getInt(1), rs.getString(2), rs.getInt(3)};
+            }
+            return null;
+        }catch(SQLException e){
+            System.err.println(e);
+            return null;
+        }finally{
+            cerrarConsulta(rs, ps, con);
+        }
+    }
 }

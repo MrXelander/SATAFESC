@@ -29,6 +29,8 @@ public class CtrlFinanzas  implements ActionListener{
         view.lbl_costos.setVisible(false);
         view.lbl_descuentos.setVisible(false);
         view.lbl_perdidas.setVisible(false);
+        view.lbl_mas_vendido.setVisible(false);
+        view.lbl_ganancias.setVisible(false);
     }
     
     @Override
@@ -40,12 +42,17 @@ public class CtrlFinanzas  implements ActionListener{
             view.lbl_costos.setText("$ " + cons.costoVentas(fecha));
             view.lbl_descuentos.setText("$ " + cons.descuentos(fecha));
             view.lbl_perdidas.setText("$ " + cons.perdidas(fecha));
+            Object[] res = cons.masVendido(fecha);
+            view.lbl_mas_vendido.setText(res[1].toString());
+            view.lbl_ganancias.setText("$ " + Funciones.ganancias(cons.dineroEfectivo(fecha), cons.dineroBancos(fecha), cons.perdidas(fecha), cons.costoVentas(fecha)));
             
             view.lbl_caja.setVisible(true);
             view.lbl_bancos.setVisible(true);
             view.lbl_costos.setVisible(true);
             view.lbl_descuentos.setVisible(true);
             view.lbl_perdidas.setVisible(true);
+            view.lbl_mas_vendido.setVisible(true);
+        view.lbl_ganancias.setVisible(true);
         }
     }
 }
