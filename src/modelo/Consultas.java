@@ -80,7 +80,7 @@ public class Consultas extends Conexion{
         }
     }
     
-    public int empleadoID(String emp){
+    public int empleadoID(String emp){ //Funcion que nos facilita obtener el id de un usuario/empleado
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection con = getConexion();
@@ -126,7 +126,7 @@ public class Consultas extends Conexion{
         }
     }
     
-    public int clienteID(String cli){
+    public int clienteID(String cli){ //funcion que nos facilita obtener el nombre de un cliente
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection con = getConexion();
@@ -177,7 +177,7 @@ public class Consultas extends Conexion{
         ResultSet rs = null;
         Connection con = getConexion();
         
-        String sql = "SELECT Id_Empleado, Usuario, Contrasena, Nivel FROM empleados WHERE Usuario = ?";
+        String sql = "SELECT * FROM empleados WHERE Usuario = ?";
         try{
             ps = con.prepareStatement(sql);
             ps.setString(1, usr.getUsuario());
@@ -187,6 +187,7 @@ public class Consultas extends Conexion{
                 if(usr.getPassword().equals(rs.getString(3))){
                     usr.setId(rs.getInt(1));
                     usr.setTipo(rs.getString(4));
+                    usr.setNombre(rs.getString(5));
                     return true;
                 }else{
                     return false;
@@ -225,7 +226,7 @@ public class Consultas extends Conexion{
         }
     }
     
-    public boolean buscarProducto(String sql2, Producto pro){
+    public boolean buscarProducto(String sql2, Producto pro){ //buscamos un producto, edita el objeto producto enviado como parametro y el String es para poner un filtro a la consulta
         PreparedStatement ps = null;
         Connection con = getConexion();
         ResultSet rs = null;
@@ -254,6 +255,7 @@ public class Consultas extends Conexion{
         }
     }
     
+    //Primer funcion de buscar producto pero fue rechazada debido a que no es muy optima, ademas devuelve una tabla, al obtener un objeto es mas facil trabajar y aplicar la funcion en otras partes del codigo
     /*public DefaultTableModel buscarProductoTabla(String sql2){ //Funcion que retorna un modelo de tabla para las busquedas de productos
         PreparedStatement ps = null;
         Connection con = getConexion();
@@ -335,6 +337,7 @@ public class Consultas extends Conexion{
         }
     }
     
+    //Esta funcion se rechazo debido a que se tenian 2 funciones para buscar y la nueva se aplica en el crud de inventario y al buscar productos en la interfaz de ventas
     /*public DefaultTableModel buscarProductoVenta(String nom){
         PreparedStatement ps = null;
         Connection con = getConexion();
@@ -368,7 +371,7 @@ public class Consultas extends Conexion{
         }
     }*/
     
-    public int registrarVenta(Venta ven){
+    public int registrarVenta(Venta ven){ //registramos una venta completa
         PreparedStatement ps = null;
         Connection con = getConexion();
         ResultSet rs = null;
@@ -398,7 +401,7 @@ public class Consultas extends Conexion{
         return id;
     }
     
-    public boolean registrarVentaDetalle(VentaDetalle vd){
+    public boolean registrarVentaDetalle(VentaDetalle vd){ //aqui se registra detalle a detalle las ventas de ccada producto
         PreparedStatement ps = null;
         Connection con = getConexion();
         
@@ -419,7 +422,7 @@ public class Consultas extends Conexion{
         }
     }
     
-    public boolean actualizarExistencias(Producto pro){
+    public boolean actualizarExistencias(Producto pro){ //Cuando se realiza una venta hay que modificar las existencias
         PreparedStatement ps = null;
         Connection con = getConexion();
         
@@ -437,4 +440,293 @@ public class Consultas extends Conexion{
             cerrarConsulta(null, ps, con);
         }
     }
+    
+    public boolean agregarUsuario(Usuario usr){ //Funcion para agregar usuario a la base de datos
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        
+        String sql = "INSERT INTO `empleados` (`Id_Empleado`, `Usuario`, `Contrasena`, `Nivel`, `Nombre`) VALUES (NULL, ?, ?, ?, ?)";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, usr.getUsuario());
+            ps.setString(2, usr.getPassword());
+            ps.setString(3, usr.getTipo());
+            ps.setString(4, usr.getNombre());
+            ps.execute();
+            
+            return true;
+        }catch(SQLException e){
+            System.err.println(e);
+            return false;
+        }finally{
+            cerrarConsulta(null, ps, con);
+        }
+    }
+    
+    public boolean buscarUsuario(String sql2, Usuario usr){ //funcion para buscar usuarios que de igual manera solo edita el objeto del parametro y usa un filtro con el String
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT * FROM `empleados`" + sql2;
+        try{
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                usr.setId(rs.getInt(1));
+                usr.setUsuario(rs.getString(2));
+                usr.setPassword(rs.getString(3));
+                usr.setTipo(rs.getString(4));
+                usr.setNombre(rs.getString(5));
+                return true;
+            }
+            return false;
+        }catch(SQLException e){
+            System.err.println(e);
+            return false;
+        }finally{
+            cerrarConsulta(rs, ps, con);
+        }
+    }
+    
+    public boolean actualizarUsuario(Usuario usr){ //Funcion para modificar los datos de un usuario en la base de datos
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        
+        String sql = "UPDATE `empleados` SET `Usuario` = ?, `Contrasena` = ?, `Nivel` = ?, `Nombre` = ? WHERE `Id_Empleado` = ?";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, usr.getUsuario());
+            ps.setString(2, usr.getPassword());
+            ps.setString(3, usr.getTipo());
+            ps.setString(4, usr.getNombre());
+            ps.setInt(5, usr.getId());
+            ps.execute();
+            return true;
+        }catch(SQLException e){
+            System.err.println(e);
+            return false;
+        }finally{
+            cerrarConsulta(null, ps, con);
+        }
+    }
+    
+    public boolean borrarUsuario(Usuario usr){ //Funcion para borrar un usuario de la base de datos
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        
+        String sql = "DELETE FROM `empleados` WHERE `empleados`.`Id_Empleado` = ?";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, usr.getId());
+            ps.execute();
+            return true;
+        }catch(SQLException e){
+            System.err.println(e);
+            return false;
+        }finally{
+            cerrarConsulta(null, ps, con);
+        }
+    }
+    
+    public double valorInventario(){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT SUM(Existencias*Costo) AS Total FROM `producto`;";
+        try{
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return rs.getDouble(1);
+            }
+            return 0;
+        }catch(SQLException e){
+            System.err.println(e);
+            return 0;
+        }finally{
+            cerrarConsulta(rs, ps, con);
+        }
+    }
+    
+    public double dineroEfectivo(String fecha){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT IFNULL(SUM(Monto_Total), 0) AS Total FROM `ventas` WHERE Metodo_Pago = 'Efectivo' AND Fecha LIKE ?;";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, fecha);
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return rs.getDouble(1);
+            }
+            return 0;
+        }catch(SQLException e){
+            System.err.println(e);
+            return 0;
+        }finally{
+            cerrarConsulta(rs, ps, con);
+        }
+    }
+    
+    public double dineroBancos(String fecha){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT IFNULL(SUM(Monto_Total), 0) AS Total FROM `ventas` WHERE Metodo_Pago = 'tarjeta' AND Fecha LIKE ?;";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, fecha);
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return rs.getDouble(1);
+            }
+            return 0;
+        }catch(SQLException e){
+            System.err.println(e);
+            return 0;
+        }finally{
+            cerrarConsulta(rs, ps, con);
+        }
+    }
+    
+    public double descuentos(String fecha){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT IFNULL(SUM(Descuento), 0) AS Total FROM `ventas` WHERE Fecha LIKE ?;";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, fecha);
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return rs.getDouble(1);
+            }
+            return 0;
+        }catch(SQLException e){
+            System.err.println(e);
+            return 0;
+        }finally{
+            cerrarConsulta(rs, ps, con);
+        }
+    }
+    
+    public double costoVentas(String fecha){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT SUM(C.Costo*B.Cantidad) AS costo FROM (SELECT Id_Venta, Fecha FROM ventas) A LEFT JOIN (SELECT Id_Venta, Id_Producto, Cantidad FROM detalle_ventas) B ON A.Id_Venta = B.Id_Venta LEFT JOIN (SELECT Id_Producto, Costo FROM producto) C ON B.Id_Producto = C.Id_Producto WHERE A.Fecha LIKE ?";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, fecha);
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return rs.getDouble(1);
+            }
+            return 0;
+        }catch(SQLException e){
+            System.err.println(e);
+            return 0;
+        }finally{
+            cerrarConsulta(rs, ps, con);
+        }
+    }
+    
+    public double perdidas(String fecha){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT IFNULL(SUM(Monto_Total), 0) AS Total FROM `ventas` WHERE Metodo_Pago = 'perdida' AND Fecha LIKE ?;";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, fecha);
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                return rs.getDouble(1);
+            }
+            return 0;
+        }catch(SQLException e){
+            System.err.println(e);
+            return 0;
+        }finally{
+            cerrarConsulta(rs, ps, con);
+        }
+    }
+    
+    public ArrayList<String> listaIdProductos(){ //Funcion para obtener la lista de todos los id de producto para facilitar la funcion de stock de productos y caducidad de productos
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection con = getConexion();
+        ArrayList<String> lista = new ArrayList();
+        
+        String sql = "SELECT * FROM `producto`;";
+        try{
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                lista.add(rs.getString(1));
+            }
+            return lista;
+        }catch(SQLException e){
+            System.err.println(e);
+            return null;
+        }
+    }
+    
+    /*public boolean stockProductos(Producto pro){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT * FROM `producto` WHERE Id_Producto = ?";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, pro.getId());
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                if(rs.getDouble(7)==0){
+                    return true;
+                }
+            }
+            return false;
+        }catch(SQLException e){
+            System.err.println(e);
+            return false;
+        }finally{
+            cerrarConsulta(rs, ps, con);
+        }
+    }*/
+    
+    /*public boolean caducidadProductos(Producto pro){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT * FROM `producto` WHERE Id_Producto = ?";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, pro.getId());
+            rs = ps.executeQuery();
+            
+            
+        }catch(SQLException e){
+        
+        }
+    }*/
 }

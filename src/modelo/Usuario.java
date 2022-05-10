@@ -9,7 +9,16 @@ public class Usuario {  //Objeto usuario para facilitar el login y tareas poster
     private String usuario;
     private String password;
     private String tipo;
+    private String nombre;
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
     public int getId() {
         return id;
     }

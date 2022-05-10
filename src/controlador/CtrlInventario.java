@@ -130,12 +130,12 @@ public class CtrlInventario implements ActionListener, KeyListener{
                 view.cb_mes.setEnabled(true);
             }
         }else if(e.getSource()==view.btn_buscar){
-             if(view.txt_id.getText().equals("") && view.txt_nombre.getText().equals("") && view.txt_codigobarras.getText().equals("")){
+             if(view.txt_id.getText().equals("") && view.txt_nombre.getText().equals("") && view.txt_codigobarras.getText().equals("") && view.cb_categoria.getSelectedItem()==null){
                  JOptionPane.showMessageDialog(null, "No deje campos vacios");
              }else{
                  tm.setRowCount(0);
                 pro = new Producto();
-                String sql = null;
+                String sql;
                 if(!view.txt_id.getText().equals("") && view.txt_nombre.getText().equals("") && view.txt_codigobarras.getText().equals("")){
                    sql = " WHERE Id_Producto = '" + view.txt_id.getText() + "'";
                 }else if(view.txt_id.getText().equals("") && !view.txt_nombre.getText().equals("") && view.txt_codigobarras.getText().equals("")){
@@ -143,6 +143,9 @@ public class CtrlInventario implements ActionListener, KeyListener{
                 }else if(view.txt_id.getText().equals("") && view.txt_nombre.getText().equals("") && !view.txt_codigobarras.getText().equals("")){
                     sql = " WHERE Codigo_Barras = '" + view.txt_codigobarras.getText() + "'";
                    limpiar();
+                }else if(view.txt_id.getText().equals("") && view.txt_nombre.getText().equals("") && view.txt_codigobarras.getText().equals("") && view.cb_categoria.getSelectedItem()!=null){
+                    int categoria = cons.categoriaID(view.cb_categoria.getSelectedItem().toString());
+                    sql = " WHERE Id_Categoria = '" + categoria + "'";
                 }else{
                     JOptionPane.showMessageDialog(null, "Solo puede llenar un campo al buscar");
                     return;

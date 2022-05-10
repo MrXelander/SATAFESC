@@ -22,18 +22,16 @@ public class CtrlVentas implements ActionListener, KeyListener{
     private ArrayList<VentaDetalle> listapro;
     private DefaultTableModel tm;
     private DefaultTableModel tm2;
-    private Funciones fun;
     private final Usuario usr;
     private Venta ven;
     private VentaDetalle vd;
     
-    public CtrlVentas(VistaVentas view, Consultas cons, Producto pro,ArrayList<VentaDetalle> listapro, DefaultTableModel tm, Funciones fun, DefaultTableModel tm2, Usuario usr, Venta ven, VentaDetalle vd){
+    public CtrlVentas(VistaVentas view, Consultas cons, Producto pro,ArrayList<VentaDetalle> listapro, DefaultTableModel tm, DefaultTableModel tm2, Usuario usr, Venta ven, VentaDetalle vd){
         this.view = view;
         this.cons = cons;
         this.pro = pro;
         this.listapro = listapro;
         this.tm = tm;
-        this.fun = fun;
         this.tm2 = tm2;
         this.usr = usr;
         this.ven = ven;
@@ -87,7 +85,7 @@ public class CtrlVentas implements ActionListener, KeyListener{
             if(view.txt_pago.getText().length()>=10){
                 e.consume();
             }
-            int c = fun.contador(view.txt_pago.getText(), '.');
+            int c = Funciones.contador(view.txt_pago.getText(), '.');
             if(c>0){
                 e.consume();
             }
@@ -166,7 +164,7 @@ public class CtrlVentas implements ActionListener, KeyListener{
                         double totalcompra = Double.parseDouble(view.txt_total.getText()) + total;
                         view.txt_total.setText(String.valueOf(totalcompra));
                         int puntos = Integer.parseInt(view.txt_puntos.getText());
-                        double puntosusar = fun.puntosAPesos(puntos);
+                        double puntosusar = Funciones.puntosAPesos(puntos);
                         double totalfinal = totalcompra - puntosusar;
                         view.txt_totalfinal.setText(String.valueOf(totalfinal));
                         double pago = Double.parseDouble(view.txt_pago.getText());
@@ -193,7 +191,7 @@ public class CtrlVentas implements ActionListener, KeyListener{
                 double total = Double.parseDouble(view.txt_total.getText()) - subtotal;
                 view.txt_total.setText(String.valueOf(total));
                 int puntos = Integer.parseInt(view.txt_puntos.getText());
-                double puntosusar = fun.puntosAPesos(puntos);
+                double puntosusar = Funciones.puntosAPesos(puntos);
                 double totalfinal = total - puntosusar;
                 view.txt_totalfinal.setText(String.valueOf(totalfinal));
                 double pago;
@@ -219,9 +217,9 @@ public class CtrlVentas implements ActionListener, KeyListener{
             ven.setId_empleado(usr.getId());
             ven.setId_cliente(cons.clienteID(view.cb_clientes.getSelectedItem().toString()));
             ven.setMetodo_pago(view.cb_pago.getSelectedItem().toString());
-            ven.setFecha(fun.obtenerFecha());
-            ven.setHora(fun.obtenerHora());
-            ven.setDescuento(fun.puntosAPesos(Integer.parseInt(view.txt_puntos.getText())));
+            ven.setFecha(Funciones.obtenerFecha());
+            ven.setHora(Funciones.obtenerHora());
+            ven.setDescuento(Funciones.puntosAPesos(Integer.parseInt(view.txt_puntos.getText())));
             ven.setMonto_total(Double.parseDouble(view.txt_totalfinal.getText()));
             int id = cons.registrarVenta(ven);
             if(id!=0){
@@ -234,10 +232,10 @@ public class CtrlVentas implements ActionListener, KeyListener{
                             int exis = pro.getExistencias() - listapro.get(i).getCantidad();
                             pro.setExistencias(exis);
                             cons.actualizarExistencias(pro);
+                            view.lbl_resultado.setText("Venta realizada correctamente");
                         }
                     }
                 }
-                JOptionPane.showMessageDialog(null, "Venta realizada correctamente");
             }
             view.dispose();
         }

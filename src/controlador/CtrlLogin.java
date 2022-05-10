@@ -56,7 +56,7 @@ public class CtrlLogin implements ActionListener, KeyListener{
                 usr.setPassword(hash.getHash(pwd, "SHA1"));
                 if(cons.login(usr)){
                     vista.VistaMenu frm_menu = new vista.VistaMenu();
-                    controlador.CtrlMenu ctrlmenu = new controlador.CtrlMenu(frm_menu, usr);
+                    controlador.CtrlMenu ctrlmenu = new controlador.CtrlMenu(frm_menu, usr, cons);
                     ctrlmenu.init();
                     frm_menu.lbl_user.setText(view.txt_user.getText());
                     frm_menu.setVisible(true);

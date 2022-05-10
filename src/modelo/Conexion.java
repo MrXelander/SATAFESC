@@ -20,8 +20,6 @@ public class Conexion {
         try{
             Class.forName(driver);
             con = DriverManager.getConnection(this.url, this.user, this.password);
-            
-            System.out.println("Conectado a la base de datos");
         }catch(SQLException e){
             System.err.println(e);
         } catch (ClassNotFoundException ex) {
