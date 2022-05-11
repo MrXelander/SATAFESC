@@ -42,6 +42,7 @@ public class CtrlVentas implements ActionListener, KeyListener{
         this.view.btn_agregar.addActionListener(this);
         this.view.txt_pago.addKeyListener(this);
         this.view.btn_pagar.addActionListener(this);
+        this.view.txt_puntos.addKeyListener(this);
     }
     
     public void init(){
@@ -49,6 +50,10 @@ public class CtrlVentas implements ActionListener, KeyListener{
         ArrayList<String> lista = cons.listaClientes();
         for(int i = 0; i<lista.size(); i++){
             view.cb_clientes.addItem(lista.get(i));
+        }
+        
+        if(usr.getTipo().equals("Admin")){
+            view.cb_pago.addItem("perdida");
         }
     }
     
@@ -62,11 +67,40 @@ public class CtrlVentas implements ActionListener, KeyListener{
                 pago = 0;
             }else{
                 pago = Double.parseDouble(view.txt_pago.getText());
-            }
+            }  
             double total = Double.parseDouble(view.txt_totalfinal.getText()); 
             double cambio = pago - total;
             view.txt_cambio.setText(String.valueOf(cambio));
             if(Double.parseDouble(view.txt_cambio.getText())<0){
+                view.btn_pagar.setEnabled(false);
+            }else{
+                view.btn_pagar.setEnabled(true);
+            }
+        }else if(e.getSource()==view.txt_puntos){
+            int pts;
+            if(view.txt_puntos.getText().equals("")){
+                pts = 0;
+            }else{
+                pts = Integer.parseInt(view.txt_puntos.getText());
+            }
+            double pago;
+            if(view.txt_pago.getText().equals("")){
+                pago = 0;
+            }else{
+                pago = Double.parseDouble(view.txt_pago.getText());
+            }
+            double total = Double.parseDouble(view.txt_total.getText());
+            double desc = Funciones.puntosAPesos(pts);
+            double totalfinal = total - desc;
+            view.txt_totalfinal.setText(String.valueOf(totalfinal));
+            double cambio = pago - totalfinal;
+            view.txt_cambio.setText(String.valueOf(cambio));
+            if(Double.parseDouble(view.txt_cambio.getText())<0){
+                view.btn_pagar.setEnabled(false);
+            }else{
+                view.btn_pagar.setEnabled(true);
+            }
+            if(pts>Integer.parseInt(view.txt_puntosdisponibles.getText())){
                 view.btn_pagar.setEnabled(false);
             }else{
                 view.btn_pagar.setEnabled(true);
@@ -102,6 +136,15 @@ public class CtrlVentas implements ActionListener, KeyListener{
             if(view.txt_codigo.getText().length()>=20){
                 e.consume();
             }
+        }else if(e.getSource()==view.txt_puntos){
+            int key = e.getKeyChar();
+            boolean numeros = key >= 48 && key <= 57;
+            if (!(numeros)){
+                e.consume();
+            }
+            if(view.txt_id.getText().length()>=7){
+                e.consume();
+            }
         }
     }
     
@@ -128,6 +171,9 @@ public class CtrlVentas implements ActionListener, KeyListener{
             }else{
                 view.txt_puntos.setEnabled(true);
             }
+            int id = cons.clienteID(view.cb_clientes.getSelectedItem().toString());
+            int pts = cons.puntosDisponibles(id);
+            view.txt_puntosdisponibles.setText(String.valueOf(pts));
         }else if(e.getSource()==view.btn_agregar){
             if((Integer)view.sp_cantidad.getValue()>0){
                 String sql2 = null;
@@ -175,6 +221,7 @@ public class CtrlVentas implements ActionListener, KeyListener{
                         }else{
                             view.btn_pagar.setEnabled(true);
                         }
+                        limpiar();
                     }else{
                         JOptionPane.showMessageDialog(null, "No hay suficientes existencias");
                     }
@@ -213,31 +260,37 @@ public class CtrlVentas implements ActionListener, KeyListener{
                 JOptionPane.showMessageDialog(null, "Selecciona una fila");
             }
         }else if(e.getSource()==view.btn_pagar){
-            ven = new Venta();
-            ven.setId_empleado(usr.getId());
-            ven.setId_cliente(cons.clienteID(view.cb_clientes.getSelectedItem().toString()));
-            ven.setMetodo_pago(view.cb_pago.getSelectedItem().toString());
-            ven.setFecha(Funciones.obtenerFecha());
-            ven.setHora(Funciones.obtenerHora());
-            ven.setDescuento(Funciones.puntosAPesos(Integer.parseInt(view.txt_puntos.getText())));
-            ven.setMonto_total(Double.parseDouble(view.txt_totalfinal.getText()));
-            int id = cons.registrarVenta(ven);
-            if(id!=0){
-                for(int i=0;i<listapro.size();i++){
-                    listapro.get(i).setId_venta(id);
-                    if(cons.registrarVentaDetalle(listapro.get(i))){
-                        pro = new Producto();
-                        pro.setId(listapro.get(i).getId_producto());
-                        if(cons.buscarProducto(" WHERE Id_Producto = '" + pro.getId() + "'", pro)){
-                            int exis = pro.getExistencias() - listapro.get(i).getCantidad();
-                            pro.setExistencias(exis);
-                            cons.actualizarExistencias(pro);
-                            view.lbl_resultado.setText("Venta realizada correctamente");
+            if(Integer.parseInt(view.txt_total.getText())>0){
+                ven = new Venta();
+                ven.setId_empleado(usr.getId());
+                ven.setId_cliente(cons.clienteID(view.cb_clientes.getSelectedItem().toString()));
+                ven.setMetodo_pago(view.cb_pago.getSelectedItem().toString());
+                ven.setFecha(Funciones.obtenerFecha());
+                ven.setHora(Funciones.obtenerHora());
+                ven.setDescuento(Funciones.puntosAPesos(Integer.parseInt(view.txt_puntos.getText())));
+                ven.setMonto_total(Double.parseDouble(view.txt_totalfinal.getText()));
+                int id = cons.registrarVenta(ven);
+                if(id!=0){
+                    for(int i=0;i<listapro.size();i++){
+                        listapro.get(i).setId_venta(id);
+                        if(cons.registrarVentaDetalle(listapro.get(i))){
+                            pro = new Producto();
+                            pro.setId(listapro.get(i).getId_producto());
+                            if(cons.buscarProducto(" WHERE Id_Producto = '" + pro.getId() + "'", pro)){
+                                int exis = pro.getExistencias() - listapro.get(i).getCantidad();
+                                pro.setExistencias(exis);
+                                cons.actualizarExistencias(pro);
+                                cons.insertarRecompensas(ven);
+                                view.lbl_resultado.setText("Venta realizada correctamente");
+                                view.lbl_resultado.setVisible(true);
+                                limpiar();
+                            }
                         }
                     }
                 }
+            }else{
+                JOptionPane.showMessageDialog(null, "No puede hacer una compra sin agregar productos");
             }
-            view.dispose();
         }
     }
     
@@ -245,5 +298,6 @@ public class CtrlVentas implements ActionListener, KeyListener{
         view.txt_id.setText(null);
         view.txt_codigo.setText(null);
         view.txt_nombre.setText(null);
+        view.sp_cantidad.setValue(0);
     }
 }

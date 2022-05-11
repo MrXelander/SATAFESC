@@ -30,6 +30,10 @@ public class CtrlUsuarios implements ActionListener, KeyListener{
         this.view.btn_eliminar.addActionListener(this);
         this.view.btn_limpiar.addActionListener(this);
         this.view.btn_select.addActionListener(this);
+        this.view.txt_id.addKeyListener(this);
+        this.view.txt_nombre.addKeyListener(this);
+        this.view.txt_usuario.addKeyListener(this);
+        this.view.txt_contrasena.addKeyListener(this);
     }
     
     public void init(){

@@ -23,6 +23,7 @@ public class CtrlMenu implements ActionListener{
         this.view.btn_ventas.addActionListener(this);
         this.view.btn_inventario.addActionListener(this);
         this.view.btn_finanzas.addActionListener(this);
+        this.view.btn_clientes.addActionListener(this);
         this.view.btn_usuarios.addActionListener(this);
     }
     
@@ -104,10 +105,18 @@ public class CtrlMenu implements ActionListener{
         }else if(e.getSource()==view.btn_usuarios){
             view.escritorio.removeAll();
             vista.VistaUsuarios vi = new vista.VistaUsuarios();
-            modelo.Consultas cons = new modelo.Consultas();
             modelo.Hash hash = new modelo.Hash();
             javax.swing.table.DefaultTableModel tm = (javax.swing.table.DefaultTableModel)vi.tbl_usuarios.getModel();
             CtrlUsuarios ctrl = new CtrlUsuarios(vi, usr, cons, hash, tm);
+            view.escritorio.add(vi);
+            ctrl.init();
+            vi.setVisible(true);
+        }else if(e.getSource()==view.btn_clientes){
+            view.escritorio.removeAll();
+            vista.VistaClientes vi = new vista.VistaClientes();
+            modelo.Cliente cli = new modelo.Cliente();
+            javax.swing.table.DefaultTableModel tm = (javax.swing.table.DefaultTableModel)vi.tbl_usuarios.getModel();
+            CtrlClientes ctrl = new CtrlClientes(vi, cons, cli, tm, usr);
             view.escritorio.add(vi);
             ctrl.init();
             vi.setVisible(true);

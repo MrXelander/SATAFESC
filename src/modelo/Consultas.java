@@ -243,7 +243,7 @@ public class Consultas extends Conexion{
                 pro.setCodigo_barras(rs.getString(4));
                 pro.setPrecio(rs.getDouble(5));
                 pro.setCaducidad(rs.getString(6));
-                pro.setExistencias(7);
+                pro.setExistencias(rs.getInt(7));
                 pro.setCosto(rs.getDouble(8));
                 pro.setCategoria(categoriaNombre(pro.getId_categoria()));
                 return true;
@@ -688,7 +688,7 @@ public class Consultas extends Conexion{
         }
     }
     
-    /*public boolean stockProductos(Producto pro){
+    public boolean stockProductos(Producto pro){
         PreparedStatement ps = null;
         Connection con = getConexion();
         ResultSet rs = null;
@@ -711,7 +711,7 @@ public class Consultas extends Conexion{
         }finally{
             cerrarConsulta(rs, ps, con);
         }
-    }*/
+    }
     
     /*public boolean caducidadProductos(Producto pro){
         PreparedStatement ps = null;
@@ -724,9 +724,16 @@ public class Consultas extends Conexion{
             ps.setInt(1, pro.getId());
             rs = ps.executeQuery();
             
+            if(rs.next()){
+                pro.setCaducidad(rs.getString(6));
+            }
             
+            return Funciones.caducidad(pro);
         }catch(SQLException e){
-        
+            System.err.println(e);
+            return false;
+        }finally{
+            cerrarConsulta(rs, ps, con);
         }
     }*/
     
@@ -748,6 +755,140 @@ public class Consultas extends Conexion{
         }catch(SQLException e){
             System.err.println(e);
             return null;
+        }finally{
+            cerrarConsulta(rs, ps, con);
+        }
+    }
+    
+    public boolean agregarCliente(Cliente cli){ //Funcion para agregar clientes a la base de datos
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        
+        String sql = "INSERT INTO `clientes` (`Id_Cliente`, `Nombre`, `A_Paterno`, `A_Materno`, `Direccion`, `Telefono`) VALUES (NULL, ?, ?, ?, ?, ?)";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, cli.getNombre());
+            ps.setString(2, cli.getA_paterno());
+            ps.setString(3, cli.getA_materno());
+            ps.setString(4, cli.getDireccion());
+            ps.setString(5, cli.getTelefono());
+            ps.execute();
+            return true;
+        }catch(SQLException e){
+            System.err.println(e);
+            return false;
+        }finally{
+            cerrarConsulta(null, ps, con);
+        }
+    }
+    
+    public boolean buscarCliente(String sql2, Cliente cli){ //buscamos un cliente, edita el objeto producto enviado como parametro y el String es para poner un filtro a la consulta
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT * FROM clientes" + sql2;
+        try{
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                cli.setId(rs.getInt(1));
+                cli.setNombre(rs.getString(2));
+                cli.setA_paterno(rs.getString(3));
+                cli.setA_materno(rs.getString(4));
+                cli.setDireccion(rs.getString(5));
+                cli.setTelefono(rs.getString(6));
+                return true;
+            }
+            return false;
+        }catch(SQLException e){
+            System.err.println(e);
+            return false;
+        }
+    }
+    
+    public boolean actualizarCliente(Cliente cli){ //Funcion para actualizar clientes de la base de datos
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        
+        String sql = "UPDATE clientes SET Nombre = ?, A_Paterno = ?, A_Materno = ?, Direccion = ?, Telefono = ? WHERE Id_Cliente = ?";
+        try{
+            ps = con.prepareCall(sql);
+            ps.setString(1, cli.getNombre());
+            ps.setString(2, cli.getA_paterno());
+            ps.setString(3, cli.getA_materno());
+            ps.setString(4, cli.getDireccion());
+            ps.setString(5, cli.getTelefono());
+            ps.setInt(6, cli.getId());
+            ps.execute();
+            return true;
+        }catch(SQLException e){
+            System.err.println(e);
+            return false;
+        }finally{
+            cerrarConsulta(null, ps, con);
+        }
+    }
+    
+    public boolean borrarCliente(Cliente cli){ //Funcion para borrar clientes de la base de datos
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        
+        String sql = "DELETE FROM `clientes` WHERE `clientes`.`Id_Cliente` = ?";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, cli.getId());
+            ps.execute();
+            return true;
+        }catch(SQLException e){
+            System.err.println(e);
+            return false;
+        }finally{
+            cerrarConsulta(null, ps, con);
+        }
+    }
+    
+    public boolean insertarRecompensas(Venta ven){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        
+        String sql = "INSERT INTO `recompensas` (`Id_Recompensa`, `Id_Cliente`, `Puntos`, `Fecha`, `Expiracion`) VALUES (NULL, ?, ?, ?, ?)";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, ven.getId_cliente());
+            ps.setInt(2, Funciones.calcularPts(ven.getMonto_total()));
+            ps.setString(3, Funciones.obtenerFecha());
+            ps.setString(4, Funciones.obtenerExpiracion());
+            
+            ps.execute();
+            return true;
+        }catch(SQLException e){
+            System.err.println(e);
+            return false;
+        }finally{
+            cerrarConsulta(null, ps, con);
+        }
+    }
+    
+    public int puntosDisponibles(int id){
+        PreparedStatement ps = null;
+        Connection con = getConexion();
+        ResultSet rs = null;
+        
+        String sql = "SELECT (A.total - B.tot) AS suma FROM (SELECT Id_Cliente, SUM(Puntos) AS total FROM `recompensas` GROUP BY Id_Cliente) A INNER JOIN (SELECT Id_Cliente, SUM(Descuento*10) AS tot FROM `ventas` GROUP BY Id_Cliente) B ON A.Id_Cliente = B.Id_Cliente WHERE A.Id_Cliente = ?";
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                return rs.getInt(1);
+            }
+                return 0;
+        }catch(SQLException e){
+            System.err.println(e);
+            return 0;
         }finally{
             cerrarConsulta(rs, ps, con);
         }

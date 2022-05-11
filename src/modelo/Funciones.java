@@ -19,8 +19,22 @@ public class Funciones {
         return c.get(Calendar.YEAR);
     }
     
+    public static int obtenerMes(){
+        Calendar c = Calendar.getInstance();
+        return c.get(Calendar.MONTH) + 1;
+    }
+    
     public static double puntosAPesos(int pts){
         return pts * 0.1;
+    }
+    
+    public static int calcularPts(Double mont){
+        int m = mont.intValue();
+        return m;
+    }
+    
+    public static String obtenerExpiracion(){
+        return String.valueOf(obtenerAnio() +1) + "-" + String.valueOf(obtenerMes()) + "-01";
     }
     
     public static int contador(String cad, char car){

@@ -150,7 +150,6 @@ public class CtrlInventario implements ActionListener, KeyListener{
                     sql = " WHERE Nom_Producto LIKE '%" + view.txt_nombre.getText() + "%'";
                 }else if(view.txt_id.getText().equals("") && view.txt_nombre.getText().equals("") && !view.txt_codigobarras.getText().equals("")){
                     sql = " WHERE Codigo_Barras = '" + view.txt_codigobarras.getText() + "'";
-                   limpiar();
                 }else if(view.txt_id.getText().equals("") && view.txt_nombre.getText().equals("") && view.txt_codigobarras.getText().equals("") && view.cb_categoria.getSelectedItem()!=null){
                     int categoria = cons.categoriaID(view.cb_categoria.getSelectedItem().toString());
                     sql = " WHERE Id_Categoria = '" + categoria + "'";

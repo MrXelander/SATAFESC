@@ -32,12 +32,13 @@ public class VistaMenu extends javax.swing.JFrame {
         panelSideBar = new javax.swing.JPanel();
         btn_ventas = new javax.swing.JButton();
         btn_inventario = new javax.swing.JButton();
-        btn_usuarios = new javax.swing.JButton();
+        btn_clientes = new javax.swing.JButton();
         buttonAyuda = new javax.swing.JButton();
         btn_logout = new javax.swing.JButton();
         labelLogo = new javax.swing.JLabel();
         labelSATA = new javax.swing.JLabel();
         btn_finanzas = new javax.swing.JButton();
+        btn_usuarios = new javax.swing.JButton();
         panelMenuBar = new javax.swing.JPanel();
         labelBienvenido = new javax.swing.JLabel();
         lbl_user = new javax.swing.JLabel();
@@ -70,13 +71,13 @@ public class VistaMenu extends javax.swing.JFrame {
         btn_inventario.setBorderPainted(false);
         panelSideBar.add(btn_inventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 180, -1));
 
-        btn_usuarios.setBackground(new java.awt.Color(255, 102, 102));
-        btn_usuarios.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
-        btn_usuarios.setForeground(new java.awt.Color(255, 255, 255));
-        btn_usuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/male_user_26px.png"))); // NOI18N
-        btn_usuarios.setText("Usuarios");
-        btn_usuarios.setBorderPainted(false);
-        panelSideBar.add(btn_usuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 180, -1));
+        btn_clientes.setBackground(new java.awt.Color(255, 102, 102));
+        btn_clientes.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        btn_clientes.setForeground(new java.awt.Color(255, 255, 255));
+        btn_clientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/male_user_26px.png"))); // NOI18N
+        btn_clientes.setText("Clientes");
+        btn_clientes.setBorderPainted(false);
+        panelSideBar.add(btn_clientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 180, -1));
 
         buttonAyuda.setBackground(new java.awt.Color(255, 102, 102));
         buttonAyuda.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
@@ -111,6 +112,14 @@ public class VistaMenu extends javax.swing.JFrame {
         btn_finanzas.setText("Finanzas");
         btn_finanzas.setBorderPainted(false);
         panelSideBar.add(btn_finanzas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 180, -1));
+
+        btn_usuarios.setBackground(new java.awt.Color(255, 102, 102));
+        btn_usuarios.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        btn_usuarios.setForeground(new java.awt.Color(255, 255, 255));
+        btn_usuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/male_user_26px.png"))); // NOI18N
+        btn_usuarios.setText("Usuarios");
+        btn_usuarios.setBorderPainted(false);
+        panelSideBar.add(btn_usuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 180, -1));
 
         getContentPane().add(panelSideBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 700));
 
@@ -164,6 +173,7 @@ public class VistaMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btn_clientes;
     public javax.swing.JButton btn_finanzas;
     public javax.swing.JButton btn_inventario;
     public javax.swing.JButton btn_logout;
