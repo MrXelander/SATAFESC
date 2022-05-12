@@ -206,7 +206,7 @@ public class VistaFinanzas extends javax.swing.JInternalFrame {
 
         jScrollPane1.setViewportView(jPanel7);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 810, 600));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 810, 450));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
